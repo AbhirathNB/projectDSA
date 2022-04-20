@@ -373,7 +373,7 @@ void PrimMST(Graph<E> graph)
 		AdjListNode* pCrawl = graph.array[u].head;
 
 		while (pCrawl != NULL) {
-			E v = pCrawl->dest;
+			int v = pCrawl->dest;
 
 			// If v is not yet included in MST and weight of u-v is
 			// less than key value of v, then update key value and
@@ -390,7 +390,7 @@ void PrimMST(Graph<E> graph)
 	}
 
 	// print edges of MST
-	printArr(graph, parent, V);
+	printArr(graph<E>, parent, V);
 	
 }
 
