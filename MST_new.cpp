@@ -328,39 +328,104 @@ bool isValidEdge(int u, int v, vector<bool> inMST)
 template<typename E>
 void PrimMST(Graph<E> graph)
 {
-    int V = graph.V;
-    //vector<vector<E>> cost = graph.convertToAdjMatrix();
-    vector<bool> inMST(V, false);
+    // int V = graph.V;
+    // //vector<vector<E>> cost = graph.convertToAdjMatrix();
+    // vector<bool> inMST(V, false);
  
-    // Include first vertex in MST
-    inMST[0] = true;
+    // // Include first vertex in MST
+    // inMST[0] = true;
  
     // Keep adding edges while number of included
     // edges does not become V-1.
-    int edge_count = 0, mincost = 0;
-    while (edge_count < V - 1) {
+    // int edge_count = 0, mincost = 0;
+    // while (edge_count < V - 1) {
  
-        // Find minimum weight valid edge. 
-        int min = INT_MAX, a = -1, b = -1;
-        for (int i = 0; i < V; i++) {
-            for (int j = 0; j < V; j++) {              
-                if (cost[i][j] < min) {
-                    if (isValidEdge(i, j, inMST)) {
-                        min = cost[i][j];
-                        a = i;
-                        b = j;
-                    }
-                }
-            }
-        }
-        if (a != -1 && b != -1) {
-            printf("Edge %d:(%d, %d) cost: %d \n", edge_count++, a, b, min);
-            mincost = mincost + min;
-            inMST[b] = inMST[a] = true;
-        }
-    }
-    printf("\n Minimum cost= %d \n", mincost);
+    //     // Find minimum weight valid edge. 
+    //     int min = INT_MAX, a = -1, b = -1;
+    //     for (int i = 0; i < V; i++) {
+    //         for (int j = 0; j < V; j++) {              
+    //             if (cost[i][j] < min) {
+    //                 if (isValidEdge(i, j, inMST)) {
+    //                     min = cost[i][j];
+    //                     a = i;
+    //                     b = j;
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     if (a != -1 && b != -1) {
+    //         printf("Edge %d:(%d, %d) cost: %d \n", edge_count++, a, b, min);
+    //         mincost = mincost + min;
+    //         inMST[b] = inMST[a] = true;
+    //     }
+    // }
+    // printf("\n Minimum cost= %d \n", mincost);
 
+	 //printArr(graph, parent, V);
+
+    int V = graph.V; 
+    
+    // Array to store constructed MST
+	int parent[V]; 
+
+    // Key values used to pick minimum weight edge in cut
+	int key[V]; 
+
+	// minHeap represents set E
+	MinHeap minHeap;
+
+	// Initialize min heap with all vertices.
+    // Key value of all vertices (except 0th vertex) is initially infinite
+	for (int v = 1; v < V; ++v) 
+    {
+		parent[v] = -1;
+		key[v] = INT_MAX;
+		minHeap.arr[v] = newMinHeapNode(v, key[v]);
+		minHeap.pos[v] = v;
+	}
+
+	// Make key value of 0th vertex as 0 so that it
+	// is extracted first
+	key[0] = 0;
+	minHeap.arr[0] = newMinHeapNode(0, key[0]);
+	minHeap.pos[0] = 0;
+
+	// Initially size of min heap is equal to V
+	minHeap.size = V;
+
+	// In the following loop,
+    // min heap contains all nodes not yet added to MST.
+
+	while (!minHeap.isEmpty()) {
+
+		// Extract the vertex with minimum key value
+		int u = minHeap.extractMin();
+
+        // Store the extracted vertex number
+		//int u = minHeapNode.v; 
+
+		// Traverse through all adjacent vertices of u (the extracted
+		// vertex) and update their key values
+		AdjListNode* pCrawl = graph->array[u].head;
+
+		while (pCrawl != NULL) {
+			E v = pCrawl->dest;
+
+			// If v is not yet included in MST and weight of u-v is
+			// less than key value of v, then update key value and
+			// parent of v
+
+			if (isInMinHeap(minHeap, v) && pCrawl->weight < key[v]) {
+				key[v] = pCrawl->weight;
+				parent[v] = u;
+				decreaseKey(minHeap, v, key[v]);
+			}
+
+			pCrawl = pCrawl->next;
+		}
+	}
+
+	// print edges of MST
 	printArr(graph, parent, V);
 	
 }
