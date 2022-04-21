@@ -379,7 +379,7 @@ void PrimMST(Graph<E> graph)
 			// less than key value of v, then update key value and
 			// parent of v
 
-			if (isInMinHeap(v) && pCrawl->weight < key[v]) {
+			if ((isInMinHeap(v)) && (pCrawl->weight < key[v])) {
 				key[v] = pCrawl->weight;
 				parent[v] = u;
 				decreaseKey(v, key[v]);
