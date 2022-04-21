@@ -365,11 +365,11 @@ bool isInMinHeap(struct MinimumHeap* mHeap, int v)
 // A function which prints the order in which the edges are included in the MST - From the MinHeap
 
 // Time complexity of this function is O(n)
-void printTheSteps(int array[], int n)
+void printTheSteps(int array[], int n, unordered_map<int, string> StringMap)
 {
 	for (int i = 1; i < n; i++){
 	    //printing the information of the edge included
-		cout<<"CHOOSING THE EDGE BETWEEN "<<array[i]<<" AND "<<i<<endl;
+		cout<<"CHOOSING THE EDGE BETWEEN "<<StringMap[array[i]]<<" AND "<<StringMap[i]<<endl;
 	}
 }
 
@@ -379,7 +379,7 @@ void printTheSteps(int array[], int n)
 // It takes the input of the graph to be evaluated.
 
 // Time complexity of this function is O(V*log(V))
-void MainPrimMSTFunction(struct MainGraph* graph)
+void MainPrimMSTFunction(struct MainGraph* graph, unordered_map<int, string> StringMap)
 {
     // Get the number of vertices in graph
 	int V = graph->V;
@@ -463,7 +463,7 @@ void MainPrimMSTFunction(struct MainGraph* graph)
     cout<<ansMinCost<<endl;
 
 	// print edges of MST
-	printTheSteps(parent, V);
+	printTheSteps(parent, V, StringMap);
 
 }
 
@@ -482,7 +482,7 @@ int main()
 	struct MainGraph* graph = createTheMainGraph(V);
 
 	//will store strings from the system then implements indices into Graph and MainPrimMSTFunction
-	vector<string> StringVector;
+	
 	
 	//All the values in the file are shown here
 	//int V = 9;
@@ -501,18 +501,27 @@ int main()
 	// addGraphEdge(graph, 6, 8, 6);
 	// addGraphEdge(graph, 7, 8, 7);
 	
+	unordered_map<int, string> StringMap;
+	
+	int indexInMap = 0;
 	//Time complexity for insertion of values into graph is O(V)
 	while (fin)
 	{
 		getline(fin, line);
-		int arr[3], k;
-		k = 0;
+		
+		
+		string arr[3];
+		//temp var
+		int k;
+		int flag = 0;
+		//to add into map
 		string word = "";
+		//splitting string int 3 parts : string1, string2 and number
 		for(auto x : line)
 		{
 			if (x == ' ')
 			{
-				arr[k] = stoi(word);
+				arr[k] = word;
 				k++;
 				word = "";
 			}
@@ -521,8 +530,47 @@ int main()
 				word = word + x;
 			}
 		}
+		
+		int arr0, arr1;
+		for (auto x : StringMap)
+		{
+			if (x.second == arr[0])
+			{	
+				flag = 1;
+				arr0 = x.first;
+				break;
+			}
+		}
+		if (flag == 0)
+		{
+			StringMap[indexInMap] = arr[0];
+			arr0 = indexInMap;
+			indexInMap++;
+		}
 
-		addGraphEdge(graph, arr[0], arr[1], arr[2]);
+		flag = 0;
+		for (auto x : StringMap)
+		{
+			if (x.second == arr[1])
+			{	
+				flag = 1;
+				arr1 = x.first;
+				break;
+			}
+		}
+		if (flag == 0)
+		{
+			StringMap[indexInMap] = arr[1];
+			arr1 = indexInMap;
+			indexInMap++;
+		}
+		
+
+		
+
+		int number = stoi(arr[2]);
+
+		addGraphEdge(graph, arr0, arr1, number);
 		
 	}
 	fin.close();
@@ -530,7 +578,7 @@ int main()
 
 
 
-	MainPrimMSTFunction(graph);
+	MainPrimMSTFunction(graph, StringMap);
 
 	return 0;
 }
