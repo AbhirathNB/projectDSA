@@ -11,13 +11,19 @@ class Hash
     public:
         
         //vector<int> values;
-
+        Hash();
         int returnPos(E x);
         E returnValue(int x);
         bool isPresent(E x);
         void enterValue(E x);
 
 };
+
+template<typename E>
+Hash<E> :: Hash()
+{
+    keys.reserve(0);
+}
 
 template<typename E>
 int Hash<E> :: returnPos(E x)
@@ -31,10 +37,8 @@ int Hash<E> :: returnPos(E x)
 template<typename E>
 E Hash<E> :: returnValue(int x)
 {
-    for (int i = 0; i < keys.size();i++)
-        if(keys[i] == x)
-            return keys[i];
-    return;
+
+    return keys[x];
 }
 
 template<typename E>
@@ -65,17 +69,16 @@ class AdjListNode
         int weight;
         AdjListNode* next;
 
-        AdjListNode* newAdjListNode(int dest, int weight); 
+        AdjListNode(int Dest, int Weight); 
 };
 
 
-AdjListNode* AdjListNode :: newAdjListNode(int dest, int weight)
+AdjListNode :: AdjListNode(int Dest, int Weight)
 {
-    AdjListNode* newNode = new AdjListNode;
-    newNode->dest = dest;
-    newNode->weight = weight;
-    newNode->next = NULL;
-    return newNode;
+    dest = Dest;
+    weight = Weight;
+    this->next = NULL;
+    
 }
 
 // A STRUCTURE TO REPRESENT AN ADJACENCY LIST
@@ -149,14 +152,16 @@ void Graph<E> :: addEdge(E oldsrc, E olddest, int weight)
         dest=hasher.returnPos(olddest);
     }
 
-    AdjListNode* newNode = newNode->newAdjListNode(dest, weight);
+    AdjListNode* newNode = new AdjListNode(dest, weight);
 	newNode->next = array[src].head;
 	array[src].head = newNode;
 
 
 	// Since graph is undirected, add an edge from dest to src also i.e. 
     //every time ,add the edge both ways.
-	newNode = newNode->newAdjListNode(src, weight);
+    newNode = new AdjListNode(src, weight);
+    
+
 	newNode->next = array[dest].head;
 	array[dest].head = newNode;
 }
