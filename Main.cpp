@@ -481,6 +481,8 @@ int main()
 	cout << V << endl;
 	struct MainGraph* graph = createTheMainGraph(V);
 
+	//will store strings from the system then implements indices into Graph and MainPrimMSTFunction
+	vector<string> StringVector;
 	
 	//All the values in the file are shown here
 	//int V = 9;
@@ -499,6 +501,7 @@ int main()
 	// addGraphEdge(graph, 6, 8, 6);
 	// addGraphEdge(graph, 7, 8, 7);
 	
+	//Time complexity for insertion of values into graph is O(V)
 	while (fin)
 	{
 		getline(fin, line);
