@@ -474,7 +474,7 @@ int main()
 	// Creating a Graph using Adjacency List Representation
 	ifstream fin;
 	string line;
-	fin.open("i7.txt");
+	fin.open("i6.txt");
 	
 	getline(fin, line);
 	int V = stoi(line);
@@ -486,6 +486,7 @@ int main()
 	
 	//All the values in the file are shown here
 	//int V = 9;
+	//NOTE THAT YOU NEED TO ADD SPACE AFTER EVERY NUMBER, INCLUDING LAST
 	// addGraphEdge(graph, 0, 1, 4);
 	// addGraphEdge(graph, 0, 7, 8);
 	// addGraphEdge(graph, 1, 2, 8);
@@ -510,6 +511,7 @@ int main()
 		getline(fin, line);
 		
 		
+		
 		string arr[3];
 		//temp var
 		int k = 0;
@@ -530,6 +532,7 @@ int main()
 				word = word + x;
 			}
 		}
+		//arr[k] = word;
 		
 		int arr0, arr1;
 		for (auto x : StringMap)
@@ -567,8 +570,8 @@ int main()
 		
 
 		
-
-		int number = stoi(arr[2]);
+		int number;
+		number = stoi(arr[2]);
 
 		addGraphEdge(graph, arr0, arr1, number);
 		
