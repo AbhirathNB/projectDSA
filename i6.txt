@@ -1,12 +1,13 @@
-addEdge(graph, 'A', 'B', 7);
-addEdge(graph, 'A', 'I', 15);
-addEdge(graph, 'B', 'C', 5);
-addEdge(graph, 'C', 'D', 4);
-addEdge(graph, 'C', 'E', 2);
-addEdge(graph, 'C', 'G', 3);
-addEdge(graph, 'D', 'E', 1);
-addEdge(graph, 'D', 'F', 9);
-addEdge(graph, 'F', 'G', 5);
-addEdge(graph, 'F', 'H', 12);
-addEdge(graph, 'G', 'I', 6);
-addEdge(graph, 'H', 'I', 10);
+9
+A B 7
+A I 15
+B C 5
+C D 4
+C E 2
+C G 3
+D E 1
+D F 9
+F G 5
+F H 12
+G I 6
+H I 10

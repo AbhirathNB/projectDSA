@@ -1,9 +1,10 @@
-addEdge(graph, 1, 2, 28);
-addEdge(graph, 1, 6, 10);
-addEdge(graph, 2, 3, 16);
-addEdge(graph, 2, 7, 14);
-addEdge(graph, 3, 4, 12);
-addEdge(graph, 4, 5, 22);
-addEdge(graph, 4, 7, 18);
-addEdge(graph, 5, 6, 25);
-addEdge(graph, 5, 7, 24);
+7
+1 2 28
+1 6 10
+2 3 16
+2 7 14
+3 4 12
+4 5 22
+4 7 18
+5 6 25
+5 7 24
