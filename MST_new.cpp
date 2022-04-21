@@ -5,8 +5,11 @@ using namespace std;
 template<typename E>
 class Hash
 {
-    public:
+    private:
         vector<E> keys;
+    
+    public:
+        
         //vector<int> values;
 
         int returnPos(E x);
@@ -382,10 +385,10 @@ void PrimMST(Graph<E> graph)
 			// less than key value of v, then update key value and
 			// parent of v
 
-			if ((isInMinHeap(v)) && (pCrawl->weight < key[v])) {
+			if ((minHeap.isInMinHeap(v)) && (pCrawl->weight < key[v])) {
 				key[v] = pCrawl->weight;
 				parent[v] = u;
-				decreaseKey(v, key[v]);
+				minHeap.decreaseKey(v, key[v]);
 			}
 
 			pCrawl = pCrawl->next;
@@ -404,7 +407,9 @@ void printArr(Graph<E> graph, int arr[], int n)
 {
     for (int i = 0; i < n; i++)
     {
-        cout << graph.hasher.returnValue(arr[i]) << " - " << graph.hasher.returnValue(i) << endl;
+        E x1 = graph.hasher.returnValue(arr[i]);
+        E x2 = graph.hasher.returnValue(i);
+        cout << x1 << " - " << x2 << endl;
     }
 }
 
@@ -447,7 +452,7 @@ int main()
 	graph.addEdge( 6, 8, 6);
 	graph.addEdge( 7, 8, 7);
 
-	PrimMST(graph);
+	PrimMST<int>(graph);
 
 	return 0;
 
