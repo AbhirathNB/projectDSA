@@ -481,6 +481,24 @@ int main()
 	cout << V << endl;
 	struct MainGraph* graph = createTheMainGraph(V);
 
+	
+	//All the values in the file are shown here
+	//int V = 9;
+	// addGraphEdge(graph, 0, 1, 4);
+	// addGraphEdge(graph, 0, 7, 8);
+	// addGraphEdge(graph, 1, 2, 8);
+	// addGraphEdge(graph, 1, 7, 11);
+	// addGraphEdge(graph, 2, 3, 7);
+	// addGraphEdge(graph, 2, 8, 2);
+	// addGraphEdge(graph, 2, 5, 4);
+	// addGraphEdge(graph, 3, 4, 9);
+	// addGraphEdge(graph, 3, 5, 14);
+	// addGraphEdge(graph, 4, 5, 10);
+	// addGraphEdge(graph, 5, 6, 2);
+	// addGraphEdge(graph, 6, 7, 1);
+	// addGraphEdge(graph, 6, 8, 6);
+	// addGraphEdge(graph, 7, 8, 7);
+	
 	while (fin)
 	{
 		getline(fin, line);
@@ -507,20 +525,7 @@ int main()
 	fin.close();
 
 
-	// addGraphEdge(graph, 0, 1, 4);
-	// addGraphEdge(graph, 0, 7, 8);
-	// addGraphEdge(graph, 1, 2, 8);
-	// addGraphEdge(graph, 1, 7, 11);
-	// addGraphEdge(graph, 2, 3, 7);
-	// addGraphEdge(graph, 2, 8, 2);
-	// addGraphEdge(graph, 2, 5, 4);
-	// addGraphEdge(graph, 3, 4, 9);
-	// addGraphEdge(graph, 3, 5, 14);
-	// addGraphEdge(graph, 4, 5, 10);
-	// addGraphEdge(graph, 5, 6, 2);
-	// addGraphEdge(graph, 6, 7, 1);
-	// addGraphEdge(graph, 6, 8, 6);
-	// addGraphEdge(graph, 7, 8, 7);
+
 
 	MainPrimMSTFunction(graph);
 
