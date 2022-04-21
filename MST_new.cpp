@@ -396,11 +396,17 @@ void PrimMST(Graph<E> graph)
 
         // Store the extracted vertex number
 		//int u = minHeapNode.v; 
+        AdjListNode pCrawl;
+        pC
         for(int i = 0; i < V; i++)
+
         {
             for (int j = 0; j < graph.array[v].head.size(); j++)
             {
-                
+                if (u == graph.array[v].head[j].weight)
+                {
+                    
+                }
             }
         }
 		// Traverse through all adjacent vertices of u (the extracted
