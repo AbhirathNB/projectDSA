@@ -1,0 +1,512 @@
+// DATA STRUCTURES AND ALGORITHMS PROJECT
+// LUV GHILOTHIA - 2020A7PS1700H
+// AMOGH MOSES   - 2020A7PS1199H
+// ABHIRATH N B  - 2020A7PS0260H
+
+// MST VISUALISER BY PRIM'S MST ALGORITHM IN C++
+// USING MINIMUM HEAP IMPLEMENTATION
+
+#include <bits/stdc++.h>
+
+//#include <limits.h>
+//#include <stdio.h>
+//#include <stdlib.h>
+
+using namespace std;
+
+
+// Structure to represent a node in the adjacency list
+// It has the destination vertex of the graph,
+// its weight between the source and destination vertices.
+// Also ,it has the pointer to the next node of the Adjacency List
+// so that further more nodes can be joined to make a full list.
+
+struct NodeofAdjacencyList {
+	int destinationNode;
+	int weightOfEdge;
+	struct NodeofAdjacencyList* nextNode;
+};
+
+
+// Structure to represent an Adjacency list
+// It has the pointer to the head node of the Adjacency List,
+// i.e. it is the starting point of the adjacency list.
+
+struct Adjacency_List {
+	struct NodeofAdjacencyList* HeadOfTheList;
+};
+
+
+// Structur to represent a graph
+// A Graph is represented as an array of adjacency lists here.
+// Size of array will be V.
+//where V = (total number of vertices in graph)
+
+struct MainGraph {
+	int V;
+	struct Adjacency_List* ArrayOfLists;
+	struct Hash h1;
+};
+
+
+
+// Function which createsa new node for the adjaceny list
+// This function returns the pointer to the "NodeofAdjacencyList" type ,
+// that is made from the given destination node and weight of the edge parameters.
+// Also,initially the pointer to the next node is NULL.
+
+struct NodeofAdjacencyList* newAdjListNode(int destinationNode, int weightOfEdge)
+{
+	struct NodeofAdjacencyList* newN =  new struct NodeofAdjacencyList;
+
+	//allocating the value of destination node
+	newN->destinationNode = destinationNode;
+
+	//allocating the weight of the edge
+	newN->weightOfEdge = weightOfEdge;
+
+	//allocating the next pointer
+	newN->nextNode = NULL;
+
+	//return the pointer to the new node created
+	return newN;
+}
+
+
+
+// Function that creates a graph of V vertices
+// here, V is taken as input.
+
+// Time complexity of this function is O(V)
+struct MainGraph* createTheMainGraph(int V)
+{
+	struct MainGraph* G = new struct MainGraph;
+
+	//allocating the number of vertices we want in the graph
+	G->V = V;
+
+	// Create an array of adjacency lists.
+	//Size of this array will be V.
+	G->ArrayOfLists = new struct Adjacency_List[V * sizeof(struct Adjacency_List)];
+
+	// Initialize each adjacency list as empty by making their head as NULL
+	for (int i = 0; i < V; i++)
+		G->ArrayOfLists[i].HeadOfTheList = NULL;
+
+	// return the pointer to the new graph created
+	return G;
+}
+
+
+// Function which adds an edge to the undirected graph that we have made
+// It takes input the graph in which the edge is to be added, and
+// also it takes input the weight of the edge ,
+// and the src and destinationNode vertices of it.
+
+// Time complexity of this function is O(1)
+void addGraphEdge(struct MainGraph* G, int sourceNode, int destinationNode, int weightOfEdge)
+{
+
+	// Add an edge from src to destinationNode.
+    //A new node is added to the adjacency list of src.
+	//The node is added at the beginning
+
+	struct NodeofAdjacencyList* newN = newAdjListNode(destinationNode, weightOfEdge);
+	newN->nextNode = G->ArrayOfLists[sourceNode].HeadOfTheList;
+	G->ArrayOfLists[sourceNode].HeadOfTheList = newN;
+
+
+	// Since graph is undirected, add an edge from destinationNode to src also i.e.
+    //every time ,add the edge both ways.
+
+	newN = newAdjListNode(sourceNode, weightOfEdge);
+	newN->nextNode = G->ArrayOfLists[destinationNode].HeadOfTheList;
+	G->ArrayOfLists[destinationNode].HeadOfTheList = newN;
+}
+
+
+
+// Structure to represent a MinHeap Node
+// It has the value of the vertex, and a key related to it which
+// is actually the weight ,that will be updated later as and when we encounter their src vertex.
+
+struct NodeOfMinHeap {
+	int v;
+	int KeyValue;
+};
+
+
+// Structure to represent a MinHeap
+// size - Number of heap nodes present currently.
+// capacity - Capacity of min heap.
+// "lambda" pointer is needed for decreaseKey() function later.
+
+struct MinimumHeap {
+	int size;
+	int capacity;
+
+	//position array
+	int* lambda;
+
+	struct NodeOfMinHeap** ArrayOfLists;
+};
+
+
+// Function which creates a new minHeap Node
+// Its return type is the pointer to the 'NodeOfMinHeap' type.
+
+// Time complexity of this function is O(1)
+struct NodeOfMinHeap* newMinHeapNode(int v, int KeyValue)
+{
+	struct NodeOfMinHeap* mHeapN = new struct NodeOfMinHeap;
+
+	// allocating value of that vertex
+	mHeapN->v = v;
+
+	// allocating the key value of that vertex
+	mHeapN->KeyValue = KeyValue;
+
+	// return the pointer to the min heap node created
+	return mHeapN;
+}
+
+
+
+// Function which creates a MinHeap
+// Its return type is pointer to the 'MinimumHeap' type.
+
+// Time complexity of this function is O(1)
+struct MinimumHeap* createTheMinimumHeap(int capacity)
+{
+	struct MinimumHeap* mHeap = new struct MinimumHeap;
+
+	//creating the position array
+	mHeap->lambda = new int[capacity*(sizeof(int))];
+
+	//allocating the size to 0
+	mHeap->size = 0;
+
+	//allocating the capacity
+	mHeap->capacity = capacity;
+
+    //creating the array of lists
+	mHeap->ArrayOfLists = new struct NodeOfMinHeap*[capacity * sizeof(struct NodeOfMinHeap*)];
+
+	//return the pointer to the min heap created
+	return mHeap;
+}
+
+
+
+struct Hash
+{
+	vector<char> hasher;
+	
+	int returnPos(char c)
+	{
+		for (int i = 0; i < hasher.size(); i++)
+		{
+			if(hasher[i] == c)
+				return i;
+		}
+	}
+
+	char returnValue(int x)
+	{
+		if(x < hasher.size())
+			return hasher[x];
+		return -1;
+	}
+
+	void enterValue(char x)
+	{
+		hasher.push_back(x);
+	}
+		
+};
+
+
+
+// Functions which swaps two nodes of a minHeap
+//(It takes input of those two nodes).
+// Needed for MinHeapify
+
+// Time complexity of this function is O(1)
+void swapTwoMinimumHeapNodes(struct NodeOfMinHeap** firstNode, struct NodeOfMinHeap** secondNode)
+{
+    //uses a temporary node to swap the two nodes
+	struct NodeOfMinHeap* tempNode = *firstNode;
+	*firstNode = *secondNode;
+	*secondNode = tempNode;
+}
+
+
+
+// Function which performs the minHeapfify operation
+// This function also updates position of nodes when they are swapped.
+// Position is needed for decreaseKey() function.
+// here, take input of "index" to know from where to start heapifying in the min heap
+
+// Time complexity of the below function is O(log(n))
+void minHeapify(struct MinimumHeap* mHeap, int index)
+{
+
+	int smallest, left, right;
+	smallest = index;
+	left = 2 * index + 1;
+	right = 2 * index + 2;
+
+    //compare the left child first
+	if (left < mHeap->size and mHeap->ArrayOfLists[left]->KeyValue < mHeap->ArrayOfLists[smallest]->KeyValue)
+		smallest = left;
+
+    //then compare the right child
+	if (right < mHeap->size and mHeap->ArrayOfLists[right]->KeyValue < mHeap->ArrayOfLists[smallest]->KeyValue)
+		smallest = right;
+
+    //base case for the recursive call to heapify function
+	if (smallest != index) {
+
+		// The nodes to be swapped in the min heap
+		NodeOfMinHeap* smallestNode = mHeap->ArrayOfLists[smallest];
+		NodeOfMinHeap* indexNode = mHeap->ArrayOfLists[index];
+
+		// Swap positions
+		mHeap->lambda[smallestNode->v] = index;
+		mHeap->lambda[indexNode->v] = smallest;
+
+		// Swap nodes
+		swapTwoMinimumHeapNodes(&mHeap->ArrayOfLists[smallest], &mHeap->ArrayOfLists[index]);
+
+       //make a recursive call to the function
+		minHeapify(mHeap, smallest);
+	}
+}
+
+
+// Function which checks if the minHeap is empty or not
+// Time complexity of this function is O(1)
+int isEmpty(struct MinimumHeap* mHeap)
+{
+	return mHeap->size == 0;
+}
+
+
+// Function which extracts minimum node from the heap
+
+// Time complexity of this function is O(1)
+struct NodeOfMinHeap* extractMin(struct MinimumHeap* mHeap)
+{
+    //check if heap is empty or not
+	if (isEmpty(mHeap))
+		return NULL;
+
+	// Store the root node
+	struct NodeOfMinHeap* root = mHeap->ArrayOfLists[0];
+
+	// Replace root node with last node
+	struct NodeOfMinHeap* lastNode = mHeap->ArrayOfLists[mHeap->size - 1];
+	mHeap->ArrayOfLists[0] = lastNode;
+
+	// Update position of last node
+	mHeap->lambda[root->v] = mHeap->size - 1;
+	mHeap->lambda[lastNode->v] = 0;
+
+	// Reduce heap size and heapify from the root node
+	--mHeap->size;
+	minHeapify(mHeap, 0);
+
+    //It returns the min value node from the minheap.
+	return root;
+}
+
+
+
+// Function that implements the decrease key operation
+// This function uses lambda[] of min heap
+// to get the current index of node in min heap.
+
+// Time complexity of this function is O(log(n))
+void decreaseKey(struct MinimumHeap* mHeap, int v, int KeyValue)
+{
+	// Get the index of v in heap ArrayOfLists
+	int index = mHeap->lambda[v];
+
+	// Get the node and update its key value
+	mHeap->ArrayOfLists[index]->KeyValue = KeyValue;
+
+	// Travel up while the complete tree is not heapified.
+	// This is a O(Logn) loop
+	while (index!=0 and mHeap->ArrayOfLists[index]->KeyValue < mHeap->ArrayOfLists[(index - 1) / 2]->KeyValue) 
+	{
+		// Swap this node with its parent
+		mHeap->lambda[mHeap->ArrayOfLists[index]->v] = (index - 1) / 2;
+		mHeap->lambda[mHeap->ArrayOfLists[(index - 1) / 2]->v] = index;
+		swapTwoMinimumHeapNodes(&mHeap->ArrayOfLists[index], &mHeap->ArrayOfLists[(index - 1) / 2]);
+
+		// move to parent index
+		index = (index - 1) / 2;
+	}
+}
+
+
+// Function that checks if a given vertex 'v'
+// is in MinHeap or not
+
+// Time complexity of this function is O(1)
+bool isInMinHeap(struct MinimumHeap* mHeap, int v)
+{
+	if (mHeap->lambda[v] < mHeap->size)
+		return true;
+	return false;
+}
+
+
+// A function which prints the order in which the edges are included in the MST - From the MinHeap
+
+// Time complexity of this function is O(n)
+void printTheSteps(int array[], int n)
+{
+	for (int i = 1; i < n; i++){
+	    //printing the information of the edge included
+		cout<<"CHOOSING THE EDGE BETWEEN "<<array[i]<<" AND "<<i<<endl;
+	}
+}
+
+
+// The function which constructs the Minimum Spanning Tree(MST)
+// Using Prim's Algorithm
+// It takes the input of the graph to be evaluated.
+
+// Time complexity of this function is O(V*log(V))
+void MainPrimMSTFunction(struct MainGraph* graph)
+{
+    // Get the number of vertices in graph
+	int V = graph->V;
+
+    // Array to store constructed MST
+	int parent[V];
+
+    // Key values used to pick minimum weight edge in cut
+	int KeyValue[V];
+
+	// minHeap represents set E
+	struct MinimumHeap* mHeap = createTheMinimumHeap(V);
+
+
+    // Initialize min heap with all vertices.
+	for (int itr = 1; itr < V; itr++) {
+
+	    //initialising the parent array to -1
+		parent[itr] = -1;
+
+		// Key value of all vertices (except 0th vertex) is initially infinite
+		KeyValue[itr] = INT_MAX;
+		mHeap->ArrayOfLists[itr] = newMinHeapNode(itr, KeyValue[itr]);
+		mHeap->lambda[itr] = itr;
+
+	}
+
+	// Make key value of 0th vertex as 0
+	// so that it is extracted first
+	KeyValue[0] = 0;
+	mHeap->ArrayOfLists[0] = newMinHeapNode(0, KeyValue[0]);
+	mHeap->lambda[0] = 0;
+
+
+	// Initially size of min heap is equal to V
+	mHeap->size = V;
+
+    //FOR STORING THE FINAL MINIMUM COST AS ANSWER.
+    int ansMinCost=0;
+
+
+	// In the following loop,
+    // min heap contains all nodes not yet added to MST.
+    while (!isEmpty(mHeap)) {
+
+		// Extract the vertex with minimum key value
+		struct NodeOfMinHeap* minHeapNode = extractMin(mHeap);
+
+        // Store the extracted vertex number
+		int vertexNumber = minHeapNode->v;
+
+        //incrementing the cost of our answer
+        int weightSelected=minHeapNode->KeyValue;
+        ansMinCost = ansMinCost + weightSelected;
+
+
+		// Traverse through all adjacent vertices of vertexNumber (the extracted vertex)
+		// and update their key values
+		struct NodeofAdjacencyList* ALA = graph->ArrayOfLists[vertexNumber].HeadOfTheList;
+
+
+		while (ALA != NULL) {
+			int vNode = ALA->destinationNode;
+
+			// If v is not yet included in MST and weight of u-v is
+			// less than key value of v, then update key value and
+			// parent of v
+
+			if (isInMinHeap(mHeap, vNode) and ALA->weightOfEdge < KeyValue[vNode]) {
+				KeyValue[vNode] = ALA->weightOfEdge;
+				parent[vNode] = vertexNumber;
+				decreaseKey(mHeap, vNode, KeyValue[vNode]);
+			}
+
+            //increment to the next node
+			ALA = ALA->nextNode;
+		}
+	}
+
+    //printing the answer of minimum cost
+    cout<<ansMinCost<<endl;
+
+	// print edges of MST
+	printTheSteps(parent, V);
+
+}
+
+
+// Driver program to test above functions
+int main()
+{
+	// Creating a Graph using Adjacency List Representation
+	ifstream fin;
+	string line;
+	fin.open("i7.txt");
+	int v = 0;
+	while (fin)
+	{
+		getline(fin, line);
+		if(v == 0)
+		{
+			
+			
+			
+			continue;
+		}
+	}
+	
+	int V = 9;
+	struct MainGraph* graph = createTheMainGraph(V);
+	addGraphEdge(graph, 0, 1, 4);
+	addGraphEdge(graph, 0, 7, 8);
+	addGraphEdge(graph, 1, 2, 8);
+	addGraphEdge(graph, 1, 7, 11);
+	addGraphEdge(graph, 2, 3, 7);
+	addGraphEdge(graph, 2, 8, 2);
+	addGraphEdge(graph, 2, 5, 4);
+	addGraphEdge(graph, 3, 4, 9);
+	addGraphEdge(graph, 3, 5, 14);
+	addGraphEdge(graph, 4, 5, 10);
+	addGraphEdge(graph, 5, 6, 2);
+	addGraphEdge(graph, 6, 7, 1);
+	addGraphEdge(graph, 6, 8, 6);
+	addGraphEdge(graph, 7, 8, 7);
+
+	MainPrimMSTFunction(graph);
+
+	return 0;
+}
+
