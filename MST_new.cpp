@@ -169,6 +169,7 @@ class MinHeap
     public:
         vector<int> arr;
         int size;
+        int* pos;
     
         MinHeap();
         int left(int i);
@@ -346,6 +347,8 @@ void PrimMST(Graph<E> graph)
 	for (int v = 1; v < V; ++v) 
     {
 		minHeap.addToMinHeap(graph.array[v].head->weight);
+        key[v] = INT_MAX;
+        parent[v] = -1;
 	}
 
 	// Make key value of 0th vertex as 0 so that it
@@ -390,7 +393,7 @@ void PrimMST(Graph<E> graph)
 	}
 
 	// print edges of MST
-	printArr(graph<E>, parent, V);
+	printArr(graph, parent, V);
 	
 }
 
@@ -444,7 +447,7 @@ int main()
 	graph.addEdge( 6, 8, 6);
 	graph.addEdge( 7, 8, 7);
 
-	PrimMST<int>(graph);
+	PrimMST(graph);
 
 	return 0;
 
