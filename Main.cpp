@@ -45,7 +45,7 @@ struct Adjacency_List {
 struct MainGraph {
 	int V;
 	struct Adjacency_List* ArrayOfLists;
-	struct Hash h1;
+	//struct Hash h1;
 };
 
 
@@ -475,35 +475,52 @@ int main()
 	ifstream fin;
 	string line;
 	fin.open("i7.txt");
-	int v = 0;
+	
+	getline(fin, line);
+	int V = stoi(line);
+	cout << V << endl;
+	struct MainGraph* graph = createTheMainGraph(V);
+
 	while (fin)
 	{
 		getline(fin, line);
-		if(v == 0)
+		int arr[3], k;
+		k = 0;
+		string word = "";
+		for(auto x : line)
 		{
-			
-			
-			
-			continue;
+			if (x == ' ')
+			{
+				arr[k] = stoi(word);
+				k++;
+				word = "";
+			}
+			else
+			{
+				word = word + x;
+			}
 		}
+
+		addGraphEdge(graph, arr[0], arr[1], arr[2]);
+		
 	}
-	
-	int V = 9;
-	struct MainGraph* graph = createTheMainGraph(V);
-	addGraphEdge(graph, 0, 1, 4);
-	addGraphEdge(graph, 0, 7, 8);
-	addGraphEdge(graph, 1, 2, 8);
-	addGraphEdge(graph, 1, 7, 11);
-	addGraphEdge(graph, 2, 3, 7);
-	addGraphEdge(graph, 2, 8, 2);
-	addGraphEdge(graph, 2, 5, 4);
-	addGraphEdge(graph, 3, 4, 9);
-	addGraphEdge(graph, 3, 5, 14);
-	addGraphEdge(graph, 4, 5, 10);
-	addGraphEdge(graph, 5, 6, 2);
-	addGraphEdge(graph, 6, 7, 1);
-	addGraphEdge(graph, 6, 8, 6);
-	addGraphEdge(graph, 7, 8, 7);
+	fin.close();
+
+
+	// addGraphEdge(graph, 0, 1, 4);
+	// addGraphEdge(graph, 0, 7, 8);
+	// addGraphEdge(graph, 1, 2, 8);
+	// addGraphEdge(graph, 1, 7, 11);
+	// addGraphEdge(graph, 2, 3, 7);
+	// addGraphEdge(graph, 2, 8, 2);
+	// addGraphEdge(graph, 2, 5, 4);
+	// addGraphEdge(graph, 3, 4, 9);
+	// addGraphEdge(graph, 3, 5, 14);
+	// addGraphEdge(graph, 4, 5, 10);
+	// addGraphEdge(graph, 5, 6, 2);
+	// addGraphEdge(graph, 6, 7, 1);
+	// addGraphEdge(graph, 6, 8, 6);
+	// addGraphEdge(graph, 7, 8, 7);
 
 	MainPrimMSTFunction(graph);
 
