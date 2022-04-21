@@ -512,7 +512,7 @@ int main()
 		
 		string arr[3];
 		//temp var
-		int k;
+		int k = 0;
 		int flag = 0;
 		//to add into map
 		string word = "";
