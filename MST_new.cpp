@@ -67,7 +67,7 @@ class AdjListNode
     public:
         int dest;
         int weight;
-        AdjListNode* next;
+        
 
         AdjListNode(int Dest, int Weight); 
 };
@@ -77,7 +77,6 @@ AdjListNode :: AdjListNode(int Dest, int Weight)
 {
     dest = Dest;
     weight = Weight;
-    this->next = NULL;
     
 }
 
@@ -86,9 +85,23 @@ AdjListNode :: AdjListNode(int Dest, int Weight)
 class AdjList
 {
     public:
-	    AdjListNode* head; 
+	    vector<AdjListNode> head; 
+
+        
+        AdjList();
+        void addAdjListNode(AdjListNode e);
 };
 
+AdjList :: AdjList()
+
+{
+    head.resize(0);
+}
+
+void AdjList :: addAdjListNode(AdjListNode e)
+{
+    head.push_back(e);
+}
 
 // A STRUCTURE TO REPRESENT A GRAPH.
 // A Graph is represented as an array of adjacency lists.
@@ -102,7 +115,7 @@ class Graph
 
         int V;
         Hash<E> hasher;
-        AdjList* array;
+        vector<AdjList> array;
 
         Graph(int V);
         void addEdge(E src, E dest, int weight);
@@ -114,11 +127,10 @@ Graph<E> :: Graph(int v)
 {
 	V = v;
 	// Create an array of adjacency lists. Size of this array will be V.
-	array = new AdjList();
+	array.resize(v);
 
 	// Initialize each adjacency list as empty by making head as NULL 
-	for (int i = 0; i < V; i++)
-		array[i].head = NULL;
+	
 
 }
 
@@ -152,18 +164,17 @@ void Graph<E> :: addEdge(E oldsrc, E olddest, int weight)
         dest=hasher.returnPos(olddest);
     }
 
-    AdjListNode* newNode = new AdjListNode(dest, weight);
-	newNode->next = array[src].head;
-	array[src].head = newNode;
+    AdjListNode newNode(dest, weight);
+	array[src].addAdjListNode(newNode);
+	
 
 
 	// Since graph is undirected, add an edge from dest to src also i.e. 
     //every time ,add the edge both ways.
-    newNode = new AdjListNode(src, weight);
+    AdjListNode newNode1(src, weight);
+	array[dest].addAdjListNode(newNode1);
     
 
-	newNode->next = array[dest].head;
-	array[dest].head = newNode;
 }
 
 
@@ -354,15 +365,22 @@ void PrimMST(Graph<E> graph)
     // Key value of all vertices (except 0th vertex) is initially infinite
 	for (int v = 1; v < V; ++v) 
     {
-		minHeap.addToMinHeap(graph.array[v].head->weight);
-        key[v] = INT_MAX;
-        parent[v] = -1;
+		for (int j = 0; j < graph.array[v].head.size(); j++)
+        {
+            minHeap.addToMinHeap(graph.array[v].head[j].weight);
+            key[v] = INT_MAX;
+            parent[v] = -1;
+        }
 	}
 
 	// Make key value of 0th vertex as 0 so that it
 	// is extracted first
 	key[0] = 0;
-	minHeap.addToMinHeap(graph.array[0].head->weight);
+    for (int j = 0; j < graph.array[0].head.size(); j++)
+        {
+            minHeap.addToMinHeap(graph.array[0].head[j].weight);
+            
+        }
 	//minHeap.pos[0] = 0;
 
 	// Initially size of min heap is equal to V
@@ -378,10 +396,16 @@ void PrimMST(Graph<E> graph)
 
         // Store the extracted vertex number
 		//int u = minHeapNode.v; 
-
+        for(int i = 0; i < V; i++)
+        {
+            for (int j = 0; j < graph.array[v].head.size(); j++)
+            {
+                
+            }
+        }
 		// Traverse through all adjacent vertices of u (the extracted
 		// vertex) and update their key values
-		AdjListNode* pCrawl = graph.array[u].head;
+		AdjListNode pCrawl = pCrawl.weight;
 
 		while (pCrawl != NULL) {
 			int v = pCrawl->dest;
