@@ -364,14 +364,15 @@ bool isInMinHeap(struct MinimumHeap* mHeap, int v)
 }
 
 
-// // A function which prints the order in which the edges are included in the MST - From the MinHeap
+// // A function which prints the edges included in the MST - From the MinHeap
 
 // // Time complexity of this function is O(V)
 void printTheSteps(int array[], int n, unordered_map<int, string> StringMap)
 {
+	cout << "Displaying the Minimum Spanning Tree below:"<< endl;
 	for (int i = 1; i < n; i++){
 	    //printing the information of the edge included
-		cout<<"CHOOSING THE EDGE BETWEEN "<<StringMap[array[i]]<<" AND "<<StringMap[i]<<endl;
+		cout<< StringMap[array[i]] <<" --- "<<StringMap[i]<<endl;
 	}
 }
 
@@ -468,7 +469,6 @@ void MainPrimMSTFunction(struct MainGraph* graph, unordered_map<int, string> Str
 
     //printing the answer of minimum cost
     cout<<"Hence, the minimum cost of the MST of this graph is: "<<ansMinCost<<endl;
-    // cout<<"Following is the order in which the edges are included in the MST: "<<endl;
 
 	// // print edges of MST
 	 printTheSteps(parent, V, StringMap);
