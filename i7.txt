@@ -1,4 +1,11 @@
-3 
-input output 1 
-output put 2 
-put input 3 
+7 
+Mumbai Delhi 4 
+Mumbai Pune 8 
+Delhi Ahmedabad 6 
+Delhi Pune 9 
+Ahmedabad Bangalore 7 
+Ahmedabad Chennai 2 
+Bangalore Goa 14 
+Goa Pune 2 
+Goa Chennai 1 
+Pune Chennai 7 

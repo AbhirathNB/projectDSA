@@ -198,37 +198,6 @@ struct MinimumHeap* createTheMinimumHeap(int capacity)
 	return mHeap;
 }
 
-
-
-struct Hash
-{
-	vector<char> hasher;
-	
-	int returnPos(char c)
-	{
-		for (int i = 0; i < hasher.size(); i++)
-		{
-			if(hasher[i] == c)
-				return i;
-		}
-	}
-
-	char returnValue(int x)
-	{
-		if(x < hasher.size())
-			return hasher[x];
-		return -1;
-	}
-
-	void enterValue(char x)
-	{
-		hasher.push_back(x);
-	}
-		
-};
-
-
-
 // Functions which swaps two nodes of a minHeap
 //(It takes input of those two nodes).
 // Needed for MinHeapify
@@ -339,7 +308,7 @@ void decreaseKey(struct MinimumHeap* mHeap, int v, int KeyValue)
 
 	// Travel up while the complete tree is not heapified.
 
-	while (index!=0 and mHeap->Array[index]->KeyValue < mHeap->Array[(index - 1) / 2]->KeyValue) 
+	while (index!=0 and mHeap->Array[index]->KeyValue < mHeap->Array[(index - 1) / 2]->KeyValue) //Comparing with Parent
 	{
 		// Swap this node with its parent
 		mHeap->lambda[mHeap->Array[index]->v] = (index - 1) / 2;
@@ -482,7 +451,7 @@ int main()
 	//implementing the file input handling for our code
 	ifstream fin;
 	string line;
-	fin.open("i1.txt"); //may change the input file name here
+	fin.open("i7.txt"); //may change the input file name here
 	
 	getline(fin, line);
 	int V = stoi(line);
