@@ -150,7 +150,7 @@ struct MinimumHeap {
 	//position array
 	int* lambda;
 
-	struct NodeOfMinHeap** ArrayOfLists;
+	struct NodeOfMinHeap** Array;
 };
 
 
@@ -192,7 +192,7 @@ struct MinimumHeap* createTheMinimumHeap(int capacity)
 	mHeap->capacity = capacity;
 
     //creating the array of lists
-	mHeap->ArrayOfLists = new struct NodeOfMinHeap*[capacity * sizeof(struct NodeOfMinHeap*)];
+	mHeap->Array = new struct NodeOfMinHeap*[capacity * sizeof(struct NodeOfMinHeap*)];
 
 	//return the pointer to the min heap created
 	return mHeap;
@@ -259,26 +259,26 @@ void minHeapify(struct MinimumHeap* mHeap, int index)
 	right = 2 * index + 2;
 
     //compare the left child first
-	if (left < mHeap->size and mHeap->ArrayOfLists[left]->KeyValue < mHeap->ArrayOfLists[smallest]->KeyValue)
+	if (left < mHeap->size and mHeap->Array[left]->KeyValue < mHeap->Array[smallest]->KeyValue)
 		smallest = left;
 
     //then compare the right child
-	if (right < mHeap->size and mHeap->ArrayOfLists[right]->KeyValue < mHeap->ArrayOfLists[smallest]->KeyValue)
+	if (right < mHeap->size and mHeap->Array[right]->KeyValue < mHeap->Array[smallest]->KeyValue)
 		smallest = right;
 
     //base case for the recursive call to heapify function
 	if (smallest != index) {
 
 		// The nodes to be swapped in the min heap
-		NodeOfMinHeap* smallestNode = mHeap->ArrayOfLists[smallest];
-		NodeOfMinHeap* indexNode = mHeap->ArrayOfLists[index];
+		NodeOfMinHeap* smallestNode = mHeap->Array[smallest];
+		NodeOfMinHeap* indexNode = mHeap->Array[index];
 
 		// Swap positions
 		mHeap->lambda[smallestNode->v] = index;
 		mHeap->lambda[indexNode->v] = smallest;
 
 		// Swap nodes
-		swapTwoMinimumHeapNodes(&mHeap->ArrayOfLists[smallest], &mHeap->ArrayOfLists[index]);
+		swapTwoMinimumHeapNodes(&mHeap->Array[smallest], &mHeap->Array[index]);
 
        //make a recursive call to the function
 		minHeapify(mHeap, smallest);
@@ -304,11 +304,11 @@ struct NodeOfMinHeap* extractMin(struct MinimumHeap* mHeap)
 		return NULL;
 
 	// Store the root node
-	struct NodeOfMinHeap* root = mHeap->ArrayOfLists[0];
+	struct NodeOfMinHeap* root = mHeap->Array[0];
 
 	// Replace root node with last node
-	struct NodeOfMinHeap* lastNode = mHeap->ArrayOfLists[mHeap->size - 1];
-	mHeap->ArrayOfLists[0] = lastNode;
+	struct NodeOfMinHeap* lastNode = mHeap->Array[mHeap->size - 1];
+	mHeap->Array[0] = lastNode;
 
 	// Update position of last node
 	mHeap->lambda[root->v] = mHeap->size - 1;
@@ -331,20 +331,20 @@ struct NodeOfMinHeap* extractMin(struct MinimumHeap* mHeap)
 // Time complexity of this function is O(logV)
 void decreaseKey(struct MinimumHeap* mHeap, int v, int KeyValue)
 {
-	// Get the index of v in heap ArrayOfLists
+	// Get the index of v in heap Array
 	int index = mHeap->lambda[v];
 
 	// Get the node and update its key value
-	mHeap->ArrayOfLists[index]->KeyValue = KeyValue;
+	mHeap->Array[index]->KeyValue = KeyValue;
 
 	// Travel up while the complete tree is not heapified.
 
-	while (index!=0 and mHeap->ArrayOfLists[index]->KeyValue < mHeap->ArrayOfLists[(index - 1) / 2]->KeyValue) 
+	while (index!=0 and mHeap->Array[index]->KeyValue < mHeap->Array[(index - 1) / 2]->KeyValue) 
 	{
 		// Swap this node with its parent
-		mHeap->lambda[mHeap->ArrayOfLists[index]->v] = (index - 1) / 2;
-		mHeap->lambda[mHeap->ArrayOfLists[(index - 1) / 2]->v] = index;
-		swapTwoMinimumHeapNodes(&mHeap->ArrayOfLists[index], &mHeap->ArrayOfLists[(index - 1) / 2]);
+		mHeap->lambda[mHeap->Array[index]->v] = (index - 1) / 2;
+		mHeap->lambda[mHeap->Array[(index - 1) / 2]->v] = index;
+		swapTwoMinimumHeapNodes(&mHeap->Array[index], &mHeap->Array[(index - 1) / 2]);
 
 		// move to parent index
 		index = (index - 1) / 2;
@@ -405,7 +405,7 @@ void MainPrimMSTFunction(struct MainGraph* graph, unordered_map<int, string> Str
 
 		// Key value of all vertices (except 0th vertex) is initially infinite
 		KeyValue[itr] = INT_MAX;
-		mHeap->ArrayOfLists[itr] = newMinHeapNode(itr, KeyValue[itr]);
+		mHeap->Array[itr] = newMinHeapNode(itr, KeyValue[itr]);
 		mHeap->lambda[itr] = itr;
 
 	}
@@ -413,7 +413,7 @@ void MainPrimMSTFunction(struct MainGraph* graph, unordered_map<int, string> Str
 	// Make key value of 0th vertex as 0
 	// so that it is extracted first
 	KeyValue[0] = 0;
-	mHeap->ArrayOfLists[0] = newMinHeapNode(0, KeyValue[0]);
+	mHeap->Array[0] = newMinHeapNode(0, KeyValue[0]);
 	mHeap->lambda[0] = 0;
 
 
