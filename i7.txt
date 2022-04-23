@@ -1,13 +1,4 @@
-9
-A B 7 
-A I 15 
-B C 5 
-C D 4 
-C E 2 
-C G 3 
-D E 1 
-D F 9 
-F G 5 
-F H 12 
-G I 6 
-H I 10 
+3 
+input output 1 
+output put 2 
+put input 3 

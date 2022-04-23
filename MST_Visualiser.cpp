@@ -477,7 +477,7 @@ int main()
 	//implementing the file input handling for our code
 	ifstream fin;
 	string line;
-	fin.open("i1.txt"); //may change the input file name here
+	fin.open("i7.txt"); //may change the input file name here
 	
 	getline(fin, line);
 	int V = stoi(line);

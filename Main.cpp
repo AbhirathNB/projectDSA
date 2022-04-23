@@ -445,7 +445,7 @@ int main()
 	// Creating a Graph using Adjacency List Representation
 	ifstream fin;
 	string line;
-	fin.open("i6.txt");
+	fin.open("i7.txt");
 	
 	getline(fin, line);
 	int V = stoi(line);
