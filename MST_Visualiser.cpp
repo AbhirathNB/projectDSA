@@ -364,9 +364,9 @@ bool isInMinHeap(struct MinimumHeap* mHeap, int v)
 }
 
 
-// A function which prints the order in which the edges are included in the MST - From the MinHeap
+// // A function which prints the order in which the edges are included in the MST - From the MinHeap
 
-// Time complexity of this function is O(V)
+// // Time complexity of this function is O(V)
 void printTheSteps(int array[], int n, unordered_map<int, string> StringMap)
 {
 	for (int i = 1; i < n; i++){
@@ -435,6 +435,11 @@ void MainPrimMSTFunction(struct MainGraph* graph, unordered_map<int, string> Str
 
         //incrementing the cost of our answer
         int weightSelected=minHeapNode->KeyValue;
+		// if(vertexNumber!=0)
+		// {
+		// 	cout<<"CHOOSING THE EDGE WITH THE WEIGHT "<<weightSelected<<endl;
+		// }
+			
         ansMinCost = ansMinCost + weightSelected;
 
 
@@ -463,10 +468,10 @@ void MainPrimMSTFunction(struct MainGraph* graph, unordered_map<int, string> Str
 
     //printing the answer of minimum cost
     cout<<"Hence, the minimum cost of the MST of this graph is: "<<ansMinCost<<endl;
-    cout<<"Following is the order in which the edges are included in the MST: "<<endl;
+    // cout<<"Following is the order in which the edges are included in the MST: "<<endl;
 
-	// print edges of MST
-	printTheSteps(parent, V, StringMap);
+	// // print edges of MST
+	 printTheSteps(parent, V, StringMap);
 
 }
 
@@ -477,7 +482,7 @@ int main()
 	//implementing the file input handling for our code
 	ifstream fin;
 	string line;
-	fin.open("i7.txt"); //may change the input file name here
+	fin.open("i1.txt"); //may change the input file name here
 	
 	getline(fin, line);
 	int V = stoi(line);
