@@ -1,4 +1,5 @@
 // DATA STRUCTURES AND ALGORITHMS PROJECT
+//***************************TEAM DETAILS******************************************
 // LUV GHILOTHIA - 2020A7PS1700H
 // AMOGH MOSES   - 2020A7PS1199H
 // ABHIRATH N B  - 2020A7PS0260H
@@ -6,6 +7,7 @@
 // MST VISUALISER BY PRIM'S MST ALGORITHM IN C++
 // USING MINIMUM HEAP IMPLEMENTATION
 
+//***************************START OF THE PROGRAM***********************************
 #include <bits/stdc++.h>
 
 //#include <limits.h>
@@ -45,7 +47,7 @@ struct Adjacency_List {
 struct MainGraph {
 	int V;
 	struct Adjacency_List* ArrayOfLists;
-	
+	//struct Hash h1;
 };
 
 
@@ -103,7 +105,7 @@ struct MainGraph* createTheMainGraph(int V)
 // also it takes input the weight of the edge ,
 // and the src and destinationNode vertices of it.
 
-// Time complexity of this function is O(1)
+// Time complexity of this function is O(1) (constant time)
 void addGraphEdge(struct MainGraph* G, int sourceNode, int destinationNode, int weightOfEdge)
 {
 
@@ -155,7 +157,7 @@ struct MinimumHeap {
 // Function which creates a new minHeap Node
 // Its return type is the pointer to the 'NodeOfMinHeap' type.
 
-// Time complexity of this function is O(1)
+// Time complexity of this function is O(1) (constant time)
 struct NodeOfMinHeap* newMinHeapNode(int v, int KeyValue)
 {
 	struct NodeOfMinHeap* mHeapN = new struct NodeOfMinHeap;
@@ -175,7 +177,7 @@ struct NodeOfMinHeap* newMinHeapNode(int v, int KeyValue)
 // Function which creates a MinHeap
 // Its return type is pointer to the 'MinimumHeap' type.
 
-// Time complexity of this function is O(1)
+// Time complexity of this function is O(1) (constant time)
 struct MinimumHeap* createTheMinimumHeap(int capacity)
 {
 	struct MinimumHeap* mHeap = new struct MinimumHeap;
@@ -195,6 +197,35 @@ struct MinimumHeap* createTheMinimumHeap(int capacity)
 	//return the pointer to the min heap created
 	return mHeap;
 }
+
+
+
+struct Hash
+{
+	vector<char> hasher;
+	
+	int returnPos(char c)
+	{
+		for (int i = 0; i < hasher.size(); i++)
+		{
+			if(hasher[i] == c)
+				return i;
+		}
+	}
+
+	char returnValue(int x)
+	{
+		if(x < hasher.size())
+			return hasher[x];
+		return -1;
+	}
+
+	void enterValue(char x)
+	{
+		hasher.push_back(x);
+	}
+		
+};
 
 
 
@@ -265,7 +296,7 @@ int isEmpty(struct MinimumHeap* mHeap)
 
 // Function which extracts minimum node from the heap
 
-// Time complexity of this function is O(1)
+// Time complexity of this function is O(1) (constant time)
 struct NodeOfMinHeap* extractMin(struct MinimumHeap* mHeap)
 {
     //check if heap is empty or not
@@ -297,7 +328,7 @@ struct NodeOfMinHeap* extractMin(struct MinimumHeap* mHeap)
 // This function uses lambda[] of min heap
 // to get the current index of node in min heap.
 
-// Time complexity of this function is O(log(n))
+// Time complexity of this function is O(logV)
 void decreaseKey(struct MinimumHeap* mHeap, int v, int KeyValue)
 {
 	// Get the index of v in heap ArrayOfLists
@@ -307,7 +338,7 @@ void decreaseKey(struct MinimumHeap* mHeap, int v, int KeyValue)
 	mHeap->ArrayOfLists[index]->KeyValue = KeyValue;
 
 	// Travel up while the complete tree is not heapified.
-	// This is a O(Logn) loop
+
 	while (index!=0 and mHeap->ArrayOfLists[index]->KeyValue < mHeap->ArrayOfLists[(index - 1) / 2]->KeyValue) 
 	{
 		// Swap this node with its parent
@@ -324,7 +355,7 @@ void decreaseKey(struct MinimumHeap* mHeap, int v, int KeyValue)
 // Function that checks if a given vertex 'v'
 // is in MinHeap or not
 
-// Time complexity of this function is O(1)
+// Time complexity of this function is O(1) (constant time)
 bool isInMinHeap(struct MinimumHeap* mHeap, int v)
 {
 	if (mHeap->lambda[v] < mHeap->size)
@@ -335,7 +366,7 @@ bool isInMinHeap(struct MinimumHeap* mHeap, int v)
 
 // A function which prints the order in which the edges are included in the MST - From the MinHeap
 
-// Time complexity of this function is O(n)
+// Time complexity of this function is O(V)
 void printTheSteps(int array[], int n, unordered_map<int, string> StringMap)
 {
 	for (int i = 1; i < n; i++){
@@ -349,7 +380,7 @@ void printTheSteps(int array[], int n, unordered_map<int, string> StringMap)
 // Using Prim's Algorithm
 // It takes the input of the graph to be evaluated.
 
-// Time complexity of this function is O(V*log(V))
+// Time complexity of this function is O((E+V)*log(V)) i.e. O(E*log(V))
 void MainPrimMSTFunction(struct MainGraph* graph, unordered_map<int, string> StringMap)
 {
     // Get the number of vertices in graph
@@ -431,7 +462,8 @@ void MainPrimMSTFunction(struct MainGraph* graph, unordered_map<int, string> Str
 	}
 
     //printing the answer of minimum cost
-    cout<<ansMinCost<<endl;
+    cout<<"Hence, the minimum cost of the MST of this graph is: "<<ansMinCost<<endl;
+    cout<<"Following is the order in which the edges are included in the MST: "<<endl;
 
 	// print edges of MST
 	printTheSteps(parent, V, StringMap);
@@ -442,22 +474,24 @@ void MainPrimMSTFunction(struct MainGraph* graph, unordered_map<int, string> Str
 // Driver program to test above functions
 int main()
 {
-	// Creating a Graph using Adjacency List Representation
+	//implementing the file input handling for our code
 	ifstream fin;
 	string line;
-	fin.open("i6.txt");
+	fin.open("i1.txt"); //may change the input file name here
 	
 	getline(fin, line);
 	int V = stoi(line);
-	cout << V << endl;
+
+	//cout << V << endl;
+	// Creating a Graph using Adjacency List Representation
 	struct MainGraph* graph = createTheMainGraph(V);
 
 	//will store strings from the system then implements indices into Graph and MainPrimMSTFunction
-	
+	//********NOTE THAT YOU NEED TO ADD SPACE AFTER EVERY NUMBER, INCLUDING LAST******
 	
 	//All the values in the file are shown here
 	//int V = 9;
-	//NOTE THAT YOU NEED TO ADD SPACE AFTER EVERY NUMBER, INCLUDING LAST
+
 	// addGraphEdge(graph, 0, 1, 4);
 	// addGraphEdge(graph, 0, 7, 8);
 	// addGraphEdge(graph, 1, 2, 8);
@@ -480,13 +514,12 @@ int main()
 	while (fin)
 	{
 		getline(fin, line);
-		
-		
-		
 		string arr[3];
+
 		//temp var
 		int k = 0;
 		int flag = 0;
+
 		//to add into map
 		string word = "";
 		//splitting string int 3 parts : string1, string2 and number
@@ -539,8 +572,6 @@ int main()
 			indexInMap++;
 		}
 		
-
-		
 		int number;
 		number = stoi(arr[2]);
 
@@ -549,11 +580,17 @@ int main()
 	}
 	fin.close();
 
-
-
-
+    //calling our main Prim's MST function
 	MainPrimMSTFunction(graph, StringMap);
 
 	return 0;
 }
 
+// ABOUT THE FINAL TIME COMPLEXITY OF THE PROGRAM:
+//The time complexity of the above program seems/looks O(V^2) as there are two nested while loops.
+//But we must observe that the statements in inner loop are executed O(V+E) times just like it is done in BFS.
+//The inner loop has decreaseKey() operation which takes O(LogV) time.
+//So overall time complexity is O(E+V)*O(logV) which is O((E+V)*logV) = O(E*logV).
+//We know that for a connected graph, V = O(E).
+
+//******************************END OF THE PROGRAM******************************
